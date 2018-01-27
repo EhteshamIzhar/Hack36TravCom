@@ -5,7 +5,8 @@
     <item
         android:id="@+id/songs"
         android:iconTint="@android:color/white"
-        android:title="Songs" />
+        android:title="Bitcoins PI"
+        />
 
     <item
         android:id="@+id/filter"

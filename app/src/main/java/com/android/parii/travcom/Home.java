@@ -155,6 +155,7 @@ public class Home extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
+
         return true;
     }
 
@@ -163,8 +164,10 @@ public class Home extends AppCompatActivity
 
         switch(item.getItemId()) {
             case R.id.songs: {
+                Intent i = new Intent(Home.this,BitCoinActivity.class);
+                startActivity(i);
 
-                Toast.makeText(getApplicationContext(), "Sun le zara", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getApplicationContext(), "Sun le zara", Toast.LENGTH_SHORT).show();
             }
                 break;
             case R.id.filter:
