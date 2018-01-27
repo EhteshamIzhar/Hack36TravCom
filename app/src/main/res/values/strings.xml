@@ -15,4 +15,11 @@
     <string name="workspace">de14260a-7ed5-4866-978b-dbdb6d7a0ca3</string>
     <string name="title_activity_maps">Map</string>
 
+
+    <string name="speech_prompt">Say Something</string>
+    <string name="speech_not_supported">Sorry,  your device not supported</string>
+    <string name="tap_on_mic">Tap On Mic</string>
+
+
+
 </resources>
