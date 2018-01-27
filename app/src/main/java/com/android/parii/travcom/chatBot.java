@@ -31,6 +31,10 @@ import com.ibm.watson.developer_cloud.conversation.v1.model.MessageRequest;
 import com.ibm.watson.developer_cloud.conversation.v1.model.MessageResponse;
 import com.ibm.watson.developer_cloud.http.ServiceCallback;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Locale;
 
 public class chatBot extends AppCompatActivity
@@ -39,6 +43,8 @@ public class chatBot extends AppCompatActivity
     // private int x=0;
     private TextView conversation;
     private EditText userInput;
+    public int x=0;
+    public String pop;
     private ConversationService myConversationService = null;
 
 
@@ -158,8 +164,68 @@ public class chatBot extends AppCompatActivity
 
                                     }
 
+                                    else if(response.getIntents().get(0).getIntent().endsWith("PNR"))
+                                    {
+                                        if(x%2==0)
+                                        {
+                                            String m = "Please Enter 10DIGIT PNR";
+                                            tts.speak(m, TextToSpeech.QUEUE_ADD, null, "DEFAULT");
 
-                                }
+                                            conversation.append(
+                                                    Html.fromHtml("<p><b>Bot:</b> " +
+                                                            m + "</p>")
+                                            );
+                                            x++;
+
+                                        }
+                                        else
+                                        {
+                                            String l = conversation.getText().toString();
+                                            String requestURL = "https://api.railwayapi.com/v2/pnr-status/pnr/" + l + "apikey/bmbsdt3g07/";
+                                            Fuel.get(requestURL)
+                                                    .responseString(new Handler<String>() {
+                                                        @Override
+                                                        public void success(Request request,
+                                                                            Response response, String quote)
+                                                        {
+                                                            try {
+                                                                JSONObject jsonObject = new JSONObject(quote);
+                                                                JSONArray jsonArray = jsonObject.optJSONArray("passengers");
+                                                                JSONObject jsonObject1 = jsonArray.optJSONObject(0);
+                                                                pop = jsonObject1.optString("current_status");
+                                                            } catch (JSONException e) {
+                                                                e.printStackTrace();
+                                                            }
+
+                                                            Log.d("Success","To ho gaya, ab kya");
+
+                                                            tts.speak(pop, TextToSpeech.QUEUE_ADD, null, "DEFAULT");
+
+                                                            conversation.append(
+                                                                    Html.fromHtml("<p><b>Bot:</b> " +
+                                                                            pop + "</p>")
+                                                            );
+                                                        }
+
+                                                        @Override
+                                                        public void failure(Request request,
+                                                                            Response response,
+                                                                            FuelError fuelError) {
+                                                        }
+                                                    });
+
+
+                                        }
+
+                                    }
+
+
+
+
+                                    }
+
+
+
 
                                 @Override
                                 public void onFailure(Exception e) {
