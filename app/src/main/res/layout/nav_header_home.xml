@@ -18,14 +18,50 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
         <ImageView
             android:background="@drawable/border"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_marginTop="6dp"
-            android:layout_marginRight="100dp"
+            android:layout_marginRight="20dp"
             android:src="@drawable/l4" />
+
+            <LinearLayout
+                android:weightSum="10"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+
+
+            <ImageView
+
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/coins" />
+
+             <TextView
+
+                    android:id="@+id/bitcoins"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="     50"
+                    android:textStyle="bold"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                 />
+
+
+
+            </LinearLayout>
+
+        </LinearLayout>
 
     <TextView
         android:id="@+id/txtFullName"
