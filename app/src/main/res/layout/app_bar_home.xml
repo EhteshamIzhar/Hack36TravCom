@@ -43,12 +43,13 @@
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/vr"
         android:src="@drawable/zxz"
         android:scaleType="centerCrop"
         android:layout_gravity="bottom"
         android:layout_margin="10dp"
         android:backgroundTint="#00000000"
-        />
+        tools:ignore="InvalidId" />
 
     <!--
 

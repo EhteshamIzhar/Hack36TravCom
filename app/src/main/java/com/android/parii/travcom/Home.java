@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +33,7 @@ public class Home extends AppCompatActivity
 
     FirebaseDatabase database;
     DatabaseReference category;
+    ImageButton b1;
 
     TextView txtFullName;
     RecyclerView recycler_menu;
@@ -46,6 +48,15 @@ public class Home extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Menu");
         setSupportActionBar(toolbar);
+
+        b1 = (ImageButton) findViewById(R.id.vr);
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Home.this,VrActivity.class);
+                startActivity(i);
+            }
+        });
 
         //Init Firebase
         database = FirebaseDatabase.getInstance();
