@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.kittinunf.fuel.Fuel;
 import com.github.kittinunf.fuel.core.FuelError;
@@ -35,6 +36,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.Locale;
 
 public class chatBot extends AppCompatActivity
@@ -43,7 +52,7 @@ public class chatBot extends AppCompatActivity
     // private int x=0;
     private TextView conversation;
     private EditText userInput;
-    public int x=0;
+    public static int x=0;
     public String pop;
     private ConversationService myConversationService = null;
 
@@ -123,7 +132,7 @@ public class chatBot extends AppCompatActivity
                                         @Override
                                         public void run() {
                                             conversation.append(
-                                                    Html.fromHtml("<p><b>Parii:</b> " +
+                                                    Html.fromHtml("<p><b> Zara :</b> " +
                                                             outputText + "</p>")
                                             );
                                         }
@@ -150,7 +159,7 @@ public class chatBot extends AppCompatActivity
                                                         tts.speak(quote, TextToSpeech.QUEUE_ADD, null, "DEFAULT");
 
                                                         conversation.append(
-                                                                Html.fromHtml("<p><b>Bot:</b> " +
+                                                                Html.fromHtml("<p><b>Zara :</b> " +
                                                                         quote + "</p>")
                                                         );
                                                     }
@@ -168,7 +177,7 @@ public class chatBot extends AppCompatActivity
                                     {
                                         if(x%2==0)
                                         {
-                                            String m = "Please Enter 10DIGIT PNR";
+                                            String m = "Please Enter 10 DIGIT PNR";
                                             tts.speak(m, TextToSpeech.QUEUE_ADD, null, "DEFAULT");
 
                                             conversation.append(
@@ -180,40 +189,47 @@ public class chatBot extends AppCompatActivity
                                         }
                                         else
                                         {
-                                            String l = conversation.getText().toString();
-                                            String requestURL = "https://api.railwayapi.com/v2/pnr-status/pnr/" + l + "apikey/bmbsdt3g07/";
-                                            Fuel.get(requestURL)
-                                                    .responseString(new Handler<String>() {
-                                                        @Override
-                                                        public void success(Request request,
-                                                                            Response response, String quote)
-                                                        {
-                                                            try {
-                                                                JSONObject jsonObject = new JSONObject(quote);
-                                                                JSONArray jsonArray = jsonObject.optJSONArray("passengers");
-                                                                JSONObject jsonObject1 = jsonArray.optJSONObject(0);
-                                                                pop = jsonObject1.optString("current_status");
-                                                            } catch (JSONException e) {
-                                                                e.printStackTrace();
-                                                            }
+                                            x++;
+                                            /*String m = "CNF/B2/44/DF";
+                                            tts.speak(m, TextToSpeech.QUEUE_ADD, null, "DEFAULT");
 
-                                                            Log.d("Success","To ho gaya, ab kya");
+                                            conversation.append(
+                                                    Html.fromHtml("<p><b>Bot:</b> " +
+                                                            m + "</p>")
+                                            );*/
 
-                                                            tts.speak(pop, TextToSpeech.QUEUE_ADD, null, "DEFAULT");
+                                            Log.d("me" ,""+inputText);
+                                            String l = inputText;
+                                            String requestURL = "https://api.railwayapi.com/v2/pnr-status/pnr/" + l + "/apikey/bmbsdt3g07/";
+                                            Log.d("me :" ,""+requestURL);
+                                            URL url = createURL(requestURL);
 
-                                                            conversation.append(
-                                                                    Html.fromHtml("<p><b>Bot:</b> " +
-                                                                            pop + "</p>")
-                                                            );
-                                                        }
+                                            String jsonResponse = "";
+                                            try {
+                                                Log.d("me :" ,""+requestURL);
+                                                jsonResponse = makeHttprequest(url);
+                                                Log.d("me :" ,""+jsonResponse);
+                                                Toast.makeText(chatBot.this,""+ jsonResponse,Toast.LENGTH_LONG).show();
+                                                JSONObject jsonObject = new JSONObject(jsonResponse);
+                                                Log.d("jsonobject","check parse 1" + jsonObject);
+                                                JSONArray jsonArray = jsonObject.optJSONArray("passengers");
+                                                Log.d("jsonArray","check parse 2" + jsonArray);
+                                                JSONObject jsonObject1 = jsonArray.optJSONObject(0);
+                                                Log.d("jsonobject 1 ","check parse 3" + jsonObject1);
+                                                 pop = jsonObject1.optString("current_status");
+                                                Log.d("String","check parse 4" + pop);
+                                                tts.speak(pop, TextToSpeech.QUEUE_ADD, null, "DEFAULT");
 
-                                                        @Override
-                                                        public void failure(Request request,
-                                                                            Response response,
-                                                                            FuelError fuelError) {
-                                                        }
-                                                    });
+                                                conversation.append(
+                                                        Html.fromHtml("<p><b>Bot:</b> " +
+                                                                pop + "</p>")
+                                                );
+                                            }catch (IOException e)
+                                            {
 
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
 
                                         }
 
@@ -229,6 +245,7 @@ public class chatBot extends AppCompatActivity
 
                                 @Override
                                 public void onFailure(Exception e) {
+
                                     Log.d("Fail","Ho gaya hai Parii.....debug :( ");
                                 }
 
@@ -250,6 +267,71 @@ public class chatBot extends AppCompatActivity
 
 
     }
+
+    private String makeHttprequest(URL url) throws IOException {
+        String jsonResponse = "";
+        HttpURLConnection urlConnection = null;
+        InputStream inputStream = null;
+        try
+        {
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestMethod("GET");
+            urlConnection.setReadTimeout(10000);
+            urlConnection.setConnectTimeout(15000);
+            urlConnection.connect();
+            inputStream = urlConnection.getInputStream();
+            jsonResponse = readFromStream(inputStream);
+            Log.d("makeHTTPrequest :" ,""+jsonResponse);
+
+        }catch (IOException e)
+        {
+
+        }
+        finally {
+            if(urlConnection!=null)
+            {
+                urlConnection.disconnect();
+            }
+            if(inputStream!=null)
+            {
+                inputStream.close();
+            }
+        }
+
+
+        return jsonResponse;
+    }
+
+    private String readFromStream(InputStream inputStream) throws IOException{
+        StringBuilder output = new StringBuilder();
+        if(inputStream!=null)
+        {
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.forName("UTF-8"));
+            BufferedReader reader = new BufferedReader(inputStreamReader);
+            String line = reader.readLine();
+            while (line!=null)
+            {
+                output.append(line);
+                line = reader.readLine();
+            }
+
+        }
+        return output.toString();
+    }
+
+    private URL createURL(String stringURL)
+    {
+        URL url = null;
+        try {
+            url = new URL(stringURL);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return url;
+
+    }
+
 
 
 
