@@ -7,9 +7,11 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.parii.travcom.Common.Common;
 import com.android.parii.travcom.Model.Food;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.google.firebase.database.DataSnapshot;
@@ -31,6 +33,8 @@ public class FoodDetail extends AppCompatActivity {
     FloatingActionButton btnCart;
     String foodId="";
 
+    ImageButton up,down;
+
     FirebaseDatabase database;
     DatabaseReference foods;
 
@@ -39,6 +43,9 @@ public class FoodDetail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_detail);
+
+        up=(ImageButton)findViewById(R.id.up);
+        down=(ImageButton)findViewById(R.id.down);
 
         //firebase
 
@@ -76,11 +83,27 @@ public class FoodDetail extends AppCompatActivity {
     }
 
 
-    public void see(View v) {
+    public void upfunc(View v) {
+
+        up.setImageResource(R.drawable.bup);
+        Common.x  = Common.x + 2;
+
 
      //   Intent i = new Intent(FoodDetail.this,MapViews.class);
        // startActivity(i);
     }
+
+    public void downfunc(View v) {
+
+        down.setImageResource(R.drawable.downd);
+        Common.x  = Common.x + 2;
+
+
+        //   Intent i = new Intent(FoodDetail.this,MapViews.class);
+        // startActivity(i);
+    }
+
+
 
 
 

@@ -5,4 +5,5 @@ import com.android.parii.travcom.Model.User;
 
 public class Common {
    // public static User currentUser;
+    public static int x=50;
 }

@@ -212,6 +212,7 @@
                 >
 
                 <LinearLayout
+                    android:padding="15dp"
                     android:orientation="vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
@@ -237,6 +238,8 @@
 
 
                 <ImageButton
+                    android:id="@+id/up"
+                    android:onClick="upfunc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/up"
@@ -244,11 +247,12 @@
                     />
 
                     <ImageButton
+                        android:id="@+id/down"
+                        android:onClick="downfunc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/earth"
                         android:background="#ffffff"
-                        />
+                        android:src="@drawable/earth" />
 
                 </LinearLayout>
 

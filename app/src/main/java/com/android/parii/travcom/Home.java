@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,7 +36,7 @@ public class Home extends AppCompatActivity
     DatabaseReference category;
     ImageButton b1;
 
-    TextView txtFullName;
+    TextView txtFullName,bitcoins;
     RecyclerView recycler_menu;
     RecyclerView.LayoutManager layoutManager;
 
@@ -91,9 +92,12 @@ public class Home extends AppCompatActivity
 
         //Set name for user
         View headerView = navigationView.getHeaderView(0);
-        txtFullName = (TextView) headerView.findViewById(R.id.txtFullName); //doubt *********
+        txtFullName = (TextView) headerView.findViewById(R.id.txtFullName);
+        bitcoins = (TextView) headerView.findViewById(R.id.bitcoins);//doubt *********
   //      txtFullName.setText(Common.currentUser.getName());
 
+        Log.d("me",""+Common.x);
+        bitcoins.setText(""+Common.x);
         //Load full menu
         recycler_menu = (RecyclerView) findViewById(R.id.recycler_menu);
         recycler_menu.setHasFixedSize(true);
